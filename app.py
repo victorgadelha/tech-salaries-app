@@ -5,9 +5,10 @@ import plotly.express as px
 st.set_page_config(page_title="Tech Salaries Dashboard", layout="wide")
 
 st.sidebar.header("Filtros Dinâmicos")
+
 filtro_exp = st.sidebar.selectbox(
     "Nível de Experiência",
-    ["Todos", "EN", "MI", "SE", "EX"]
+    ["Todos", "Júnior", "Pleno", "Sênior", "Executivo"]
 )
 
 st.title("📊 Tech Salaries Analysis")
@@ -49,7 +50,7 @@ fig_trend = px.line(
     title='Evolução Salarial por Experiência',
     markers=True
 )
-fig_trend.update_xaxes(type='category', dtick=1)
+fig_trend.update_xaxes(type='category', categoryorder='category ascending')
 
 with col2:
     st.plotly_chart(fig_trend, use_container_width=True)

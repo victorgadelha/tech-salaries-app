@@ -8,7 +8,14 @@ def transform_silver():
             SELECT 
                 * REPLACE (
                     LOWER(job_title) AS job_title,
-                    TRY_CAST(REPLACE(work_year, 'e', '') AS INTEGER) AS work_year
+                    TRY_CAST(REPLACE(work_year, 'e', '') AS INTEGER) AS work_year,
+                    CASE experience_level 
+                        WHEN 'EN' THEN 'Júnior'
+                        WHEN 'MI' THEN 'Pleno'
+                        WHEN 'SE' THEN 'Sênior'
+                        WHEN 'EX' THEN 'Executivo'
+                        ELSE experience_level 
+                    END AS experience_level
                 )
             FROM 'data/bronze/salaries_raw.parquet'
             WHERE salary > 0 
