@@ -8,12 +8,12 @@ def transform_silver():
             SELECT 
                 * REPLACE (
                     LOWER(job_title) AS job_title,
-                    TRY_CAST(work_year AS INTEGER) AS work_year
+                    TRY_CAST(REPLACE(work_year, 'e', '') AS INTEGER) AS work_year
                 )
             FROM 'data/bronze/salaries_raw.parquet'
             WHERE salary > 0 
               AND salary IS NOT NULL 
-              AND TRY_CAST(work_year AS INTEGER) IS NOT NULL
+              AND TRY_CAST(REPLACE(work_year, 'e', '') AS INTEGER) IS NOT NULL
         ) 
         TO 'data/silver/salaries_cleaned.parquet' 
         (FORMAT 'PARQUET')
@@ -24,7 +24,7 @@ def transform_silver():
             SELECT * FROM 'data/bronze/salaries_raw.parquet'
             WHERE salary <= 0 
                OR salary IS NULL 
-               OR TRY_CAST(work_year AS INTEGER) IS NULL
+               OR TRY_CAST(REPLACE(work_year, 'e', '') AS INTEGER) IS NULL
         ) 
         TO 'data/quarantine/salaries_anomalies.parquet' 
         (FORMAT 'PARQUET')
